@@ -165,7 +165,7 @@
       p: "",
       search_speler: function () {
         fetch(
-          "http://127.0.0.1:8000/spelers/" + this.p
+          "https://useritem-api-service-femkevm.cloud.okteto.net/spelers/" + this.p
         )
           .then((response) => response.json())
           .then((response) => (spelers = response,  console.log(response)))
