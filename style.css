@@ -1,0 +1,59 @@
+body{
+margin:0px;
+}
+#spelers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+
+
+}
+
+#spelers td, #spelers th {
+  border: 1px solid gray;
+  padding: 8px;
+}
+
+#spelers tr:nth-child(even){background-color: #f2f2f2;}
+
+#spelers tr:hover {background-color: #ddd;}
+
+#spelers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: black;
+  color: white;
+}
+
+.header {
+  overflow: hidden;
+  background-color: gray;
+  padding: 10px 5px;
+  text-align:center;
+  color:white;
+  font-size: 25px;
+}
+
+#aanmaak{
+    margin-left:20px;
+    margin-top: 80px;
+}
+#aanmaak1{
+    margin-left:20px;
+    margin-bottom:40px;
+}
+.center {
+    text-align:center;
+}
+.button{
+  margin-top:30px;
+  text-align:center;
+}
+
+.id{
+    margin-top:50px;
+    text-align:center;
+}
