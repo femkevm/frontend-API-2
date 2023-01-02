@@ -1,0 +1,208 @@
+<html>
+<head>
+
+    <script defer src="https://unpkg.com/alpinejs@3.5.0/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<div class="header">
+
+   <p>API project Femke Van Mechelen: Tennis</p>
+</div>
+<body>
+
+  <div x-data="{
+    responsedata: null,
+    voornaam: null,
+    achternaam1: null,
+    email1: null,
+    password1: null,
+    leeftijd1: null,
+    nationaliteit1: null,
+    slaghand1: null,
+    async callmethod1() {
+        this.responsedata = await (await fetch('https://useritem-api-service-femkevm.cloud.okteto.net/spelers/',
+        {
+            method: 'POST',
+            body: JSON.stringify({
+
+                naam: this.voornaam,
+                achternaam: this.achternaam1,
+                email: this.email1,
+                hashed_password: this.password1,
+                leeftijd: this.leeftijd1,
+                nationaliteit: this.nationaliteit1,
+                slaghand: this.slaghand1,
+
+
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })).json();
+
+        console.log(this.responsedata);
+    },
+}">
+    <div id="aanmaak">
+        <h2>Maak een speler aan: </h2>
+        <p>AANGEMAAKTE SPELER: <strong x-text="responsedata.naam"></strong></p>
+    </div>
+    <div class="center">
+
+
+        <div>
+          <p><strong>Voornaam: </strong></p>
+          <input type="text" x-model="voornaam">
+        </div>
+
+        <div>
+          <p ><strong>Achternaam: </strong></p>
+          <input type="text" x-model="achternaam1">
+        </div>
+
+        <div>
+          <p ><strong>Email: </strong></p>
+          <input type="text" x-model="email1">
+        </div>
+
+        <div>
+          <p ><strong>Wachtwoord: </strong></p>
+          <input type="text" x-model="password1">
+        </div>
+
+        <div >
+          <p><strong>Leeftijd: </strong></p>
+          <input type="number" x-model="leeftijd1">
+        </div>
+
+        <div>
+          <p><strong>Nationaliteit: </strong></p>
+          <input type="text" x-model="nationaliteit1">
+        </div>
+
+        <div>
+          <p ><strong>Slaghand: </strong></p>
+          <input type="text" x-model="slaghand1">
+        </div>
+        <br>
+
+    </div>
+    <div class="button">
+      <button  x-on:click="callmethod1">Maak speler</button>
+    </div>
+    <h2 id="aanmaak">Lijst van spelers:</h2>
+    <button id="aanmaak1" onClick="window.location.reload();">Toon alle spelers</button>
+
+
+    <div
+      x-cloak
+      x-data="{spelers: [], 'isLoading': true}"
+      x-init="fetch('https://useritem-api-service-femkevm.cloud.okteto.net/spelers/')
+      .then(response => response.json())
+      .then(response => { spelers = response; isLoading = false; console.log(response);})"
+    >
+      <h1 x-show="isLoading">Loading...</h1>
+      <table id="spelers" >
+        <tr>
+          <th>ID</th>
+          <th>Voornaam</th>
+          <th>Achternaam</th>
+          <th>Email</th>
+          <th>Wachtwoord</th>
+          <th>Leeftijd</th>
+          <th>Nationaliteit</th>
+          <th>Slaghand</th>
+
+
+        </tr>
+
+        <template x-for="speler in spelers" :key="speler.id">
+          <tr>
+            <td scope="row"  x-text="speler.id"></td>
+            <td  x-text="speler.naam"></td>
+            <td  x-text="speler.achternaam"></td>
+            <td  x-text="speler.email"></td>
+            <td  x-text="speler.hashed_password"></td>
+            <td  x-text="speler.leeftijd"></td>
+            <td  x-text="speler.nationaliteit"></td>
+            <td  x-text="speler.slaghand"></td>
+
+          </tr>
+        </template>
+      </table>
+
+    </div>
+      <br>
+
+  <div  x-data="init()">
+    <h2 id="aanmaak">Toon speler op ID:</h2>
+    <div class="id">
+      <div class="searchArea">
+              <input
+              class="inputText"
+              type="number"
+              placeholder="Type a number"
+              x-model="p"
+              @keyup.enter="search_speler()"
+              />
+              <button class="bg-default" @click="search_speler()">Zoek Speler</button>
+               <button onClick="window.location.reload();">Wis speler</button>
+              <br><br>
+      </div>
+      <div id="SpelersInfo">
+      </div>
+    </div>
+
+</div>
+
+</body>
+<script>
+
+    function init() {
+    return {
+      spelers: null,
+      p: "",
+      search_speler: function () {
+        fetch(
+          "http://127.0.0.1:8000/spelers/" + this.p
+        )
+          .then((response) => response.json())
+          .then((response) => (spelers = response,  console.log(response)))
+          .then((response) => (spelers))
+          .catch((err) => console.log(err))
+          .then(function(spelers) {
+            giveSpeler(spelers)
+          });
+
+        // console.log(response);
+      },
+    };
+  }
+  function giveSpeler(spelers){
+        var mainContainer = document.getElementById("SpelersInfo");
+        var voornaam = document.createElement("p");
+        var achternaam1 = document.createElement("p");
+        var email1 = document.createElement("p");
+        var password1 = document.createElement("p");
+        var leeftijd1 = document.createElement("p");
+        var nationaliteit1 = document.createElement("p");
+        var slaghand = document.createElement("p");
+        let name = spelers
+        voornaam.innerHTML = 'voornaam: ' + name.naam;
+        mainContainer.appendChild(voornaam)
+        achternaam1.innerHTML = 'achternaam: ' + name.achternaam;
+        mainContainer.appendChild(achternaam1)
+        email1.innerHTML = 'email: ' + name.email;
+        mainContainer.appendChild(email1)
+        password1.innerHTML = 'wachtwoord: ' + name.hashed_password;
+        mainContainer.appendChild(password1)
+        leeftijd1.innerHTML = 'leeftijd: ' + name.leeftijd;
+        mainContainer.appendChild(leeftijd1)
+        nationaliteit1.innerHTML = 'nationaliteit: ' + name.nationaliteit;
+        mainContainer.appendChild(nationaliteit1)
+        slaghand1.innerHTML = 'slaghand: ' + name.slaghand;
+        mainContainer.appendChild(slaghand1)
+    }
+</script>
+</html>
